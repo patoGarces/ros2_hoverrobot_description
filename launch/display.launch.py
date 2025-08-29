@@ -3,7 +3,8 @@ from launch.substitutions import Command, LaunchConfiguration
 import launch_ros
 import os
 from ament_index_python.packages import get_package_share_directory
-
+from launch.actions import IncludeLaunchDescription
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 def generate_launch_description():
 
@@ -36,6 +37,7 @@ def generate_launch_description():
         name='joint_state_publisher_gui',
         condition=launch.conditions.IfCondition(LaunchConfiguration('gui'))
     )
+
     rviz_node = launch_ros.actions.Node(
         package='rviz2',
         executable='rviz2',
@@ -43,12 +45,23 @@ def generate_launch_description():
         output='screen',
     )
 
+    # Incluir Nav2 (desde hoverrobot_navigation)
+    nav2_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory('hoverrobot_navigation'),
+                'launch',
+                'nav2_local.launch.py'
+            )
+        )
+    )
+
     return launch.LaunchDescription([
         launch.actions.DeclareLaunchArgument(name='gui', default_value='True',
                                              description='Flag to enable joint_state_publisher_gui'),
-
         joint_state_publisher_node,
         joint_state_publisher_gui_node,
         robot_state_publisher_node,
-        rviz_node
+        rviz_node,
+        nav2_launch
     ])
