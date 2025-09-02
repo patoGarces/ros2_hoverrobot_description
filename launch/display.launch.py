@@ -25,12 +25,14 @@ def generate_launch_description():
         parameters=[{'robot_description': robot_desc}],
         arguments=[urdf]
     )
+    
     joint_state_publisher_node = launch_ros.actions.Node(
         package='joint_state_publisher',
         executable='joint_state_publisher',
         name='joint_state_publisher',
         condition=launch.conditions.UnlessCondition(LaunchConfiguration('gui'))
     )
+
     joint_state_publisher_gui_node = launch_ros.actions.Node(
         package='joint_state_publisher_gui',
         executable='joint_state_publisher_gui',
@@ -43,6 +45,14 @@ def generate_launch_description():
         executable='rviz2',
         name='rviz2',
         output='screen',
+    )
+
+    static_map_to_odom = launch_ros.actions.Node(       # TODO: solo para pruebas de navegacion estaticas
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='static_map_to_odom',
+        output='screen',
+        arguments=['0', '0', '0', '0', '0', '0', 'map', 'odom']
     )
 
     # Incluir Nav2 (desde hoverrobot_navigation)
@@ -63,5 +73,6 @@ def generate_launch_description():
         joint_state_publisher_gui_node,
         robot_state_publisher_node,
         rviz_node,
-        nav2_launch
+        nav2_launch,
+        static_map_to_odom       # TODO: solo para pruebas de navegacion estaticas
     ])
