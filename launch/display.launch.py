@@ -47,14 +47,6 @@ def generate_launch_description():
         output='screen',
     )
 
-    static_map_to_odom = launch_ros.actions.Node(       # TODO: solo para pruebas de navegacion estaticas
-        package='tf2_ros',
-        executable='static_transform_publisher',
-        name='static_map_to_odom',
-        output='screen',
-        arguments=['0', '0', '0', '0', '0', '0', 'map', 'odom']
-    )
-
     # Incluir Nav2 (desde hoverrobot_navigation)
     nav2_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -74,5 +66,4 @@ def generate_launch_description():
         robot_state_publisher_node,
         rviz_node,
         nav2_launch,
-        static_map_to_odom       # TODO: solo para pruebas de navegacion estaticas
     ])
