@@ -1,6 +1,6 @@
 import launch
 from launch.substitutions import Command, LaunchConfiguration
-import launch_ros
+from launch_ros.actions import Node
 import os
 from ament_index_python.packages import get_package_share_directory
 from launch.actions import IncludeLaunchDescription
@@ -17,7 +17,7 @@ def generate_launch_description():
         robot_desc = infp.read()
 
 
-    robot_state_publisher_node = launch_ros.actions.Node(
+    robot_state_publisher_node = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
         name='robot_state_publisher',
@@ -26,21 +26,21 @@ def generate_launch_description():
         arguments=[urdf]
     )
     
-    joint_state_publisher_node = launch_ros.actions.Node(
+    joint_state_publisher_node = Node(
         package='joint_state_publisher',
         executable='joint_state_publisher',
         name='joint_state_publisher',
         condition=launch.conditions.UnlessCondition(LaunchConfiguration('gui'))
     )
 
-    joint_state_publisher_gui_node = launch_ros.actions.Node(
+    joint_state_publisher_gui_node = Node(
         package='joint_state_publisher_gui',
         executable='joint_state_publisher_gui',
         name='joint_state_publisher_gui',
         condition=launch.conditions.IfCondition(LaunchConfiguration('gui'))
     )
 
-    rviz_node = launch_ros.actions.Node(
+    rviz_node = Node(
         package='rviz2',
         executable='rviz2',
         name='rviz2',
@@ -58,12 +58,40 @@ def generate_launch_description():
         )
     )
 
+    staticTransformCollision_FL = Node(             # Transformacion estatica para sensor de colision delantero izquierdo
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        arguments=['0', '0.085', '0', '0', '0', '0', 'base_link', 'range_front_left'],
+    )
+
+    staticTransformCollision_FR = Node(             # Transformacion estatica para sensor de colision delantero derecho
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        arguments=['0', '-0.085', '0', '0', '0', '0', 'base_link', 'range_front_right'],
+    )
+
+    staticTransformCollision_RL = Node(             # Transformacion estatica para sensor de colision trasero izquierdo
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        arguments=['0', '0.085', '0', '3.14', '0', '0', 'base_link', 'range_rear_left'],
+    )
+
+    staticTransformCollision_RR = Node(             # Transformacion estatica para sensor de colision trasero derecho
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        arguments=['0', '-0.085', '0', '3.14', '0', '0', 'base_link', 'range_rear_right'],
+    )
+
     return launch.LaunchDescription([
         launch.actions.DeclareLaunchArgument(name='gui', default_value='True',
                                              description='Flag to enable joint_state_publisher_gui'),
         joint_state_publisher_node,
         joint_state_publisher_gui_node,
         robot_state_publisher_node,
+        staticTransformCollision_FL,
+        staticTransformCollision_FR,
+        staticTransformCollision_RL,
+        staticTransformCollision_RR,
         rviz_node,
         nav2_launch,
     ])
