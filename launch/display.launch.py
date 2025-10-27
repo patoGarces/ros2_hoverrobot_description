@@ -47,17 +47,6 @@ def generate_launch_description():
         output='screen',
     )
 
-    # Incluir Nav2 (desde hoverrobot_navigation)
-    nav2_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(
-                get_package_share_directory('hoverrobot_navigation'),
-                'launch',
-                'nav2_local.launch.py'
-            )
-        )
-    )
-
     staticTransformCollision_FL = Node(             # Transformacion estatica para sensor de colision delantero izquierdo
         package='tf2_ros',
         executable='static_transform_publisher',
@@ -92,6 +81,5 @@ def generate_launch_description():
         staticTransformCollision_FR,
         staticTransformCollision_RL,
         staticTransformCollision_RR,
-        rviz_node,
-        nav2_launch,
+        # rviz_node,
     ])
