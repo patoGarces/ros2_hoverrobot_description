@@ -16,6 +16,7 @@ def generate_launch_description():
     with open(urdf, 'r') as infp:
         robot_desc = infp.read()
 
+    level_log = 'warn'
 
     robot_state_publisher_node = Node(
         package='robot_state_publisher',
@@ -23,7 +24,7 @@ def generate_launch_description():
         name='robot_state_publisher',
         output='screen',
         parameters=[{'robot_description': robot_desc}],
-        arguments=[urdf]
+        arguments=[urdf, '--ros-args', '--log-level', level_log],
     )
     
     rviz_node = Node(
@@ -36,25 +37,26 @@ def generate_launch_description():
     staticTransformCollision_FL = Node(             # Transformacion estatica para sensor de colision delantero izquierdo
         package='tf2_ros',
         executable='static_transform_publisher',
-        arguments=['0', '0.085', '0', '0', '0', '0', 'base_link', 'range_front_left'],
+        arguments=['0', '0.085', '0', '0', '0', '0', 'base_link', 'range_front_left','--ros-args', '--log-level', level_log],
+        
     )
 
     staticTransformCollision_FR = Node(             # Transformacion estatica para sensor de colision delantero derecho
         package='tf2_ros',
         executable='static_transform_publisher',
-        arguments=['0', '-0.085', '0', '0', '0', '0', 'base_link', 'range_front_right'],
+        arguments=['0', '-0.085', '0', '0', '0', '0', 'base_link', 'range_front_right','--ros-args', '--log-level', level_log],
     )
 
     staticTransformCollision_RL = Node(             # Transformacion estatica para sensor de colision trasero izquierdo
         package='tf2_ros',
         executable='static_transform_publisher',
-        arguments=['0', '0.085', '0', '3.14', '0', '0', 'base_link', 'range_rear_left'],
+        arguments=['0', '0.085', '0', '3.14', '0', '0', 'base_link', 'range_rear_left','--ros-args', '--log-level', level_log],
     )
 
     staticTransformCollision_RR = Node(             # Transformacion estatica para sensor de colision trasero derecho
         package='tf2_ros',
         executable='static_transform_publisher',
-        arguments=['0', '-0.085', '0', '3.14', '0', '0', 'base_link', 'range_rear_right'],
+        arguments=['0', '-0.085', '0', '3.14', '0', '0', 'base_link', 'range_rear_right','--ros-args', '--log-level', level_log],
     )
 
     return launch.LaunchDescription([
