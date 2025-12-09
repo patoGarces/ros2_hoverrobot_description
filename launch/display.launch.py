@@ -8,7 +8,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 def generate_launch_description():
 
-    urdf_file_name = 'HoverRobot2.urdf'
+    urdf_file_name = 'HoverRobot.urdf'
     urdf = os.path.join(
         get_package_share_directory('hoverrobot_description'),
         'urdf',
@@ -34,30 +34,74 @@ def generate_launch_description():
         output='screen',
     )
 
-    staticTransformCollision_FL = Node(             # Transformacion estatica para sensor de colision delantero izquierdo
+    staticTransformCollision_FL = Node(
         package='tf2_ros',
         executable='static_transform_publisher',
-        arguments=['0', '0.085', '0', '0', '0', '0', 'base_link', 'range_front_left','--ros-args', '--log-level', level_log],
-        
+        name='tf_collision_fl',
+        arguments=[
+            '--x', '0',
+            '--y', '0.085',
+            '--z', '0',
+            '--roll', '0',
+            '--pitch', '0',
+            '--yaw', '0',
+            '--frame-id', 'base_link',
+            '--child-frame-id', 'range_front_left',
+            '--ros-args', '--log-level', level_log,
+        ],
     )
 
-    staticTransformCollision_FR = Node(             # Transformacion estatica para sensor de colision delantero derecho
+    staticTransformCollision_FR = Node(
         package='tf2_ros',
         executable='static_transform_publisher',
-        arguments=['0', '-0.085', '0', '0', '0', '0', 'base_link', 'range_front_right','--ros-args', '--log-level', level_log],
+        name='tf_collision_fr',
+        arguments=[
+            '--x', '0',
+            '--y', '-0.085',
+            '--z', '0',
+            '--roll', '0',
+            '--pitch', '0',
+            '--yaw', '0',
+            '--frame-id', 'base_link',
+            '--child-frame-id', 'range_front_right',
+            '--ros-args', '--log-level', level_log,
+        ],
     )
 
-    staticTransformCollision_RL = Node(             # Transformacion estatica para sensor de colision trasero izquierdo
+    staticTransformCollision_RL = Node(
         package='tf2_ros',
         executable='static_transform_publisher',
-        arguments=['0', '0.085', '0', '3.14', '0', '0', 'base_link', 'range_rear_left','--ros-args', '--log-level', level_log],
+        name='tf_collision_rl',
+        arguments=[
+            '--x', '0',
+            '--y', '0.085',
+            '--z', '0',
+            '--roll', '3.14',
+            '--pitch', '0',
+            '--yaw', '0',
+            '--frame-id', 'base_link',
+            '--child-frame-id', 'range_rear_left',
+            '--ros-args', '--log-level', level_log,
+        ],
     )
 
-    staticTransformCollision_RR = Node(             # Transformacion estatica para sensor de colision trasero derecho
+    staticTransformCollision_RR = Node(
         package='tf2_ros',
         executable='static_transform_publisher',
-        arguments=['0', '-0.085', '0', '3.14', '0', '0', 'base_link', 'range_rear_right','--ros-args', '--log-level', level_log],
+        name='tf_collision_rr',
+        arguments=[
+            '--x', '0',
+            '--y', '-0.085',
+            '--z', '0',
+            '--roll', '3.14',
+            '--pitch', '0',
+            '--yaw', '0',
+            '--frame-id', 'base_link',
+            '--child-frame-id', 'range_rear_right',
+            '--ros-args', '--log-level', level_log,
+        ],
     )
+
 
     return launch.LaunchDescription([
         launch.actions.DeclareLaunchArgument(name='gui', default_value='True',

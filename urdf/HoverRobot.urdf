@@ -6,20 +6,6 @@
   name="HoverRobot">
   <link
     name="base_link">
-    <inertial>
-      <origin
-        xyz="0.41515 -0.14476 -0.18554"
-        rpy="0 0 0" />
-      <mass
-        value="4.6233" />
-      <inertia
-        ixx="0.011854"
-        ixy="-4.1335E-07"
-        ixz="2.0331E-05"
-        iyy="0.015193"
-        iyz="-6.4469E-07"
-        izz="0.014152" />
-    </inertial>
     <visual>
       <origin
         xyz="0 0 0"
