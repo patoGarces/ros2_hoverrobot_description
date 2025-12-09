@@ -24,7 +24,7 @@ def generate_launch_description():
         name='robot_state_publisher',
         output='screen',
         parameters=[{'robot_description': robot_desc}],
-        arguments=[urdf, '--ros-args', '--log-level', level_log],
+        arguments=['--ros-args', '--log-level', level_log],
     )
     
     rviz_node = Node(
@@ -76,9 +76,9 @@ def generate_launch_description():
             '--x', '0',
             '--y', '0.085',
             '--z', '0',
-            '--roll', '3.14',
+            '--roll', '0',
             '--pitch', '0',
-            '--yaw', '0',
+            '--yaw', '3.14',
             '--frame-id', 'base_link',
             '--child-frame-id', 'range_rear_left',
             '--ros-args', '--log-level', level_log,
@@ -93,9 +93,9 @@ def generate_launch_description():
             '--x', '0',
             '--y', '-0.085',
             '--z', '0',
-            '--roll', '3.14',
+            '--roll', '0',
             '--pitch', '0',
-            '--yaw', '0',
+            '--yaw', '3.14',
             '--frame-id', 'base_link',
             '--child-frame-id', 'range_rear_right',
             '--ros-args', '--log-level', level_log,
